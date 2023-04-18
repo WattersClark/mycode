@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-"""Driving a simple game framework with
-   a dictionary object | Alta3 Research"""
+"""Week 2 RPG improvement"""
 
 def showInstructions():
     """Show the game instructions when called"""
     #print a main menu and the commands
     print('''
+    "Get to the Garden with a key and a potion to win! Avoid the monsters!"
     RPG Game
     ========
     Commands:
@@ -29,18 +29,32 @@ def showStatus():
 # an inventory, which is initially empty
 inventory = []
 
-# a dictionary linking a room to other rooms
+## A dictionary linking a room to other rooms
+## A dictionary linking a room to other rooms
 rooms = {
 
-            'Hall' : {
-                  'south' : 'Kitchen'
-                },
-
-            'Kitchen' : {
-                  'north' : 'Hall'
-                }
-
+        "start": {
+            "description": "You are in a dimly lit room. There are doors to the north, east, and west.",
+            "exits": {"north": "north_room", "east": "east_room", "west": "west_room"}
+        },
+    
+        "north_room": {
+            "description": "You are in a room filled with treasure chests. There is an exit to the south.",
+            "exits": {"south": "start"},
+            "items": ["gold", "sword"]
+        },
+        "east_room": {
+            "description": "You are in a room with a locked door. There is an exit to the west.",
+            "exits": {"west": "start"},
+            "items": ["key"]
+        },
+        "west_room": {
+            "description": "You are in a room with a monster guarding the exit. There is an exit to the east.",
+            "exits": {"east": "start"},
+            "monster": {"name": "Monster", "health": 50, "damage": 10
          }
+    }
+}
 
 # start the player in the Hall
 currentRoom = 'Hall'
@@ -85,6 +99,17 @@ while True:
             #delete the item key:value pair from the room's dictionary
             del rooms[currentRoom]['item']
         # if there's no item in the room or the item doesn't match
-        els
+        else:
+            #tell them they can't get it
+            print('Can\'t get ' + move[1] + '!')
 
+    ## If a player enters a room with a monster
+    if 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
+        print('A monster has got you... GAME OVER!')
+        break
+
+    ## Define how a player can win
+    if currentRoom == 'Garden' and 'key' in inventory and 'potion' in inventory:
+        print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
+        break
 

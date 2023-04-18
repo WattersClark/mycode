@@ -1,6 +1,5 @@
 #!/usr/bin/python3
-"""Driving a simple game framework with
-   a dictionary object | Alta3 Research"""
+"""Week 2 RPG Expansion"""
 
 def showInstructions():
     """Show the game instructions when called"""
@@ -30,16 +29,27 @@ def showStatus():
 inventory = []
 
 # a dictionary linking a room to other rooms
+## A dictionary linking a room to other rooms
 rooms = {
 
             'Hall' : {
-                  'south' : 'Kitchen'
+                  'south' : 'Kitchen',
+                  'east'  : 'Dining Room',
+                  'item'  : 'key'
                 },
 
             'Kitchen' : {
-                  'north' : 'Hall'
-                }
-
+                  'north' : 'Hall',
+                  'item'  : 'monster',
+                },
+            'Dining Room' : {
+                  'west' : 'Hall',
+                  'south': 'Garden',
+                  'item' : 'potion'
+               },
+            'Garden' : {
+                  'north' : 'Dining Room'
+            }
          }
 
 # start the player in the Hall
@@ -85,6 +95,16 @@ while True:
             #delete the item key:value pair from the room's dictionary
             del rooms[currentRoom]['item']
         # if there's no item in the room or the item doesn't match
-        els
+        else:
+            #tell them they can't get it
+            print('Can\'t get ' + move[1] + '!')
 
+    ## If a player enters a room with a monster
+    if 'item' in rooms[currentRoom] and 'monster' in rooms[currentRoom]['item']:
+        print('A monster has got you... GAME OVER!')
+        break
+    ## Define how a player can win
+    if currentRoom == 'Garden' and 'key' in inventory and 'potion' in inventory:
+        print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
+        break
 
