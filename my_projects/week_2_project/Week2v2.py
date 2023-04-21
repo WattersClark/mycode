@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 """Week 2 RPG Expansion"""
 
 def showInstructions():
@@ -11,7 +12,6 @@ def showInstructions():
       go [direction]
       get [item]
     ''')
-
 def showStatus():
     """determine the current status of the player"""
     # print the player's current location
@@ -22,30 +22,45 @@ def showStatus():
     # check if there's an item in the room, if so print it
     if "item" in rooms[currentRoom]:
       print('You see a ' + rooms[currentRoom]['item'])
+    # Check if there's a description in the room, if so print it
+    if "description" in rooms[currentRoom]:
+      print(rooms[currentRoom]['description'])
     print("---------------------------")
 
 
 # an inventory, which is initially empty
 inventory = []
 
-# a dictionary linking a room to other rooms
 ## A dictionary linking a room to other rooms
 rooms = {
 
             'Hall' : {
                   'south' : 'Kitchen',
+                  'north' : 'Foyer',
                   'east'  : 'Dining Room',
-                  'item'  : 'key'
+                  'item'  : 'key',
+                  'description' : 'There are doors to the north, south, and east',
+                },
+
+            'Foyer' : {
+                  'south' : 'Hall',
+                  'north' : 'Outside',
+                  'item' : 'dog',
+                  'item' : 'cat',
+                  'description' : 'There are  doors to the north and south.',
                 },
 
             'Kitchen' : {
                   'north' : 'Hall',
                   'item'  : 'monster',
+                  'description' : 'There is a door to the north.',
                 },
+
             'Dining Room' : {
                   'west' : 'Hall',
                   'south': 'Garden',
-                  'item' : 'potion'
+                  'item' : 'potion',
+                  'description' : 'There are doors to the west and south.',
                },
             'Garden' : {
                   'north' : 'Dining Room'

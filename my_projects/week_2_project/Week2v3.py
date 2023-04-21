@@ -1,5 +1,6 @@
-#!/usr/bin/python3
-"""Week 2 RPG expansion"""
+"""Week 2 RPG Expansion"""
+
+import time
 
 def showInstructions():
     """Show the game instructions when called"""
@@ -19,52 +20,41 @@ def showStatus():
     print('You are in the ' + currentRoom)
     # print what the player is carrying
     print('Inventory:', inventory)
+    # check if there's a description for the current room, if so print it
+    if "description" in rooms[currentRoom]:
+        print(rooms[currentRoom]['description'])
     # check if there's an item in the room, if so print it
     if "item" in rooms[currentRoom]:
-        
-      print('You see a ' + rooms[currentRoom]['item'])
+        print('You see a ' + rooms[currentRoom]['item'])
+
     print("---------------------------")
 
-
-# an inventory, which is initially empty
-inventory = []
-
-## A dictionary linking a room to other rooms
-rooms = {
-
-            'Hall' : {
-                  'south' : 'Kitchen',
-                  'east'  : 'Dining Room',
-                  'item'  : 'key'
-                },
-
-            'Kitchen' : {
-                  'north' : 'Hall',
-                  'item'  : 'monster',
-                },
-            'Dining Room' : {
-                  'west' : 'Hall',
-                  'south': 'Garden',
-                  'item' : 'potion'
-               },
-            'Garden' : {
-                  'north' : 'Dining Room'
-            }
-         }
-
-# start the player in the Hall
-currentRoom = 'Hall'
-
-showInstructions()
+# set up the walls
+walls_distance = 10
+walls_moving = True
+walls_timer = time.time() + 60 # the walls will take 60 seconds to close
 
 # breaking this while loop means the game is over
 while True:
     showStatus()
 
+    # check to see if the walls have closed
+    if time.time() >= walls_timer:
+        walls_moving = False
+
+    # update the distance of the walls from the player
+    if walls_moving:
+        walls_distance -= 1
+
+    # check if the walls have reached the player
+    if walls_distance <= 0:
+        print('The walls have closed on you... GAME OVER!')
+        break
+
     # the player MUST type something in
     # otherwise input will keep asking
     move = ''
-    while move == '':  
+    while move == '':
         move = input('>')
 
     # normalizing input:
@@ -107,4 +97,3 @@ while True:
     if currentRoom == 'Garden' and 'key' in inventory and 'potion' in inventory:
         print('You escaped the house with the ultra rare key and magic potion... YOU WIN!')
         break
-
